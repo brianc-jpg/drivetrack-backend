@@ -1,0 +1,16 @@
+{
+  "name": "drivetrack-backend",
+  "version": "1.0.0",
+  "description": "DriveTrack car rental CRM backend",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.3",
+    "better-sqlite3": "^9.4.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
