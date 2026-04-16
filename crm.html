@@ -1,161 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DriveTrack CRM</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
-body{background:#f5f5f3;color:#1a1a18;min-height:100vh}
-.shell{display:flex;height:100vh}
-.sidebar{width:200px;background:#fff;border-right:1px solid #e8e7e2;display:flex;flex-direction:column;flex-shrink:0}
-.logo{padding:16px 18px;font-size:15px;font-weight:600;border-bottom:1px solid #e8e7e2}
-.logo em{font-style:normal;color:#888;font-weight:400}
-.nav{padding:10px;flex:1}
-.ni{display:flex;align-items:center;gap:9px;padding:8px 11px;border-radius:8px;cursor:pointer;font-size:13px;color:#666;margin-bottom:2px}
-.ni:hover,.ni.on{background:#f5f5f3;color:#1a1a18}.ni.on{font-weight:500}
-.status-bar{padding:12px 16px;border-top:1px solid #e8e7e2;font-size:11px;color:#999}
-.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#ccc;margin-right:6px;vertical-align:middle}
-.dot.green{background:#1D9E75}.dot.red{background:#E24B4A}.dot.yellow{background:#EF9F27}
-.main{flex:1;display:flex;flex-direction:column;min-width:0;background:#f5f5f3}
-.topbar{padding:14px 20px;background:#fff;border-bottom:1px solid #e8e7e2;display:flex;align-items:center;gap:10px}
-.topbar h1{font-size:15px;font-weight:600;flex:1}
-.btn{font-size:12px;padding:6px 12px;border:1px solid #ddd;border-radius:7px;background:#fff;color:#333;cursor:pointer;font-weight:500}
-.btn:hover{background:#f5f5f3}
-.content{flex:1;overflow-y:auto;padding:20px}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
-.stat{background:#fff;border-radius:10px;padding:14px 16px;border:1px solid #e8e7e2}
-.stat-label{font-size:11px;color:#888;margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em}
-.stat-val{font-size:26px;font-weight:600}
-.card{background:#fff;border-radius:10px;border:1px solid #e8e7e2;overflow:hidden}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th{background:#fafaf8;padding:9px 14px;text-align:left;font-weight:500;font-size:11px;color:#888;border-bottom:1px solid #e8e7e2;white-space:nowrap;text-transform:uppercase;letter-spacing:.04em}
-td{padding:10px 14px;border-bottom:1px solid #f0efe9;vertical-align:middle;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-tr:last-child td{border-bottom:none}
-tr.row:hover td{background:#fafaf8;cursor:pointer}
-.pill{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:500}
-.p-intake{background:#dbeafe;color:#1e40af}.p-insurance_verify{background:#fce7f3;color:#9d174d}
-.p-approved{background:#d1fae5;color:#065f46}.p-active{background:#dcfce7;color:#166534}
-.p-billing{background:#fef3c7;color:#92400e}.p-billing_issue{background:#fee2e2;color:#991b1b}
-.p-closed,.p-default{background:#f3f4f6;color:#4b5563}
-.empty{padding:60px 24px;text-align:center;color:#aaa;font-size:14px;line-height:2}
-.lmsg{padding:60px 24px;text-align:center;color:#888;font-size:14px}
-.err{margin-bottom:14px;padding:12px 16px;background:#fee2e2;border-radius:8px;color:#991b1b;font-size:13px}
-.back{font-size:13px;color:#666;cursor:pointer;background:none;border:none;padding:0;margin-bottom:16px;display:inline-flex;align-items:center;gap:5px;font-weight:500}
-.back:hover{color:#1a1a18}
-.av{width:42px;height:42px;border-radius:50%;background:#dbeafe;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:#1e40af;flex-shrink:0}
-.dh{display:flex;align-items:center;gap:14px;margin-bottom:18px}
-.dn{font-size:17px;font-weight:600}.ds{font-size:13px;color:#666;margin-top:3px}
-.stitle{font-size:11px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;margin-top:18px}
-.fg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.f{background:#fafaf8;border-radius:8px;padding:10px 12px;border:1px solid #e8e7e2;min-width:0}
-.fl{font-size:10px;color:#aaa;margin-bottom:3px;text-transform:uppercase;letter-spacing:.04em}
-.fv{font-size:13px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.tli{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid #f0efe9}
-.tli:last-child{border:none}
-.tld{width:7px;height:7px;border-radius:50%;background:#ccc;flex-shrink:0;margin-top:4px}
-.tlt{font-size:12px}.tldate{font-size:11px;color:#aaa}
-.taski{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0efe9}
-.taski:last-child{border:none}
-.cb{width:16px;height:16px;border:1.5px solid #ccc;border-radius:4px;flex-shrink:0;cursor:pointer;background:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;color:#1D9E75}
-.cb.done{background:#dcfce7;border-color:#1D9E75}
-.ttxt{font-size:13px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.ttxt.done{text-decoration:line-through;color:#aaa}
-.pri-urgent{font-size:11px;color:#dc2626;font-weight:500}.pri-high{font-size:11px;color:#d97706;font-weight:500}.pri-normal{font-size:11px;color:#aaa}
-.fbadge{font-size:11px;padding:3px 9px;border-radius:20px;display:inline-flex;align-items:center;gap:4px}
-.fdone{background:#dcfce7;color:#166534}.fpend{background:#f3f4f6;color:#6b7280}
-.dc{background:#fff;border-radius:10px;border:1px solid #e8e7e2;padding:18px}
-</style>
-</head>
-<body>
-<div class="shell">
-  <div class="sidebar">
-    <div class="logo">Drive<em>Track</em> CRM</div>
-    <div class="nav">
-      <div class="ni on" id="n0" onclick="nav('dashboard',0)">&#9638; Dashboard</div>
-      <div class="ni" id="n1" onclick="nav('renters',1)">&#9737; Renters</div>
-      <div class="ni" id="n2" onclick="nav('tasks',2)">&#10003; Tasks</div>
-    </div>
-    <div class="status-bar"><span class="dot yellow" id="sdot"></span><span id="stxt">Connecting...</span></div>
-  </div>
-  <div class="main">
-    <div class="topbar"><h1 id="ptitle">Dashboard</h1><button class="btn" onclick="refresh()">&#8635; Refresh</button></div>
-    <div class="content" id="content"><div class="lmsg">Loading...</div></div>
-  </div>
-</div>
-<script>
-const BASE='';
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>DriveTrack CRM</title><style>*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}body{background:#f5f5f3;color:#1a1a18;min-height:100vh}.shell{display:flex;height:100vh}.sidebar{width:200px;background:#fff;border-right:1px solid #e8e7e2;display:flex;flex-direction:column;flex-shrink:0}.logo{padding:16px 18px;font-size:15px;font-weight:600;border-bottom:1px solid #e8e7e2}.logo em{font-style:normal;color:#888;font-weight:400}.nav{padding:10px;flex:1}.ni{display:flex;align-items:center;gap:9px;padding:8px 11px;border-radius:8px;cursor:pointer;font-size:13px;color:#666;margin-bottom:2px}.ni:hover,.ni.on{background:#f5f5f3;color:#1a1a18}.ni.on{font-weight:500}.status-bar{padding:12px 16px;border-top:1px solid #e8e7e2;font-size:11px;color:#999}.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#ccc;margin-right:6px;vertical-align:middle}.dot.green{background:#1D9E75}.dot.red{background:#E24B4A}.dot.yellow{background:#EF9F27}.main{flex:1;display:flex;flex-direction:column;min-width:0;background:#f5f5f3}.topbar{padding:14px 20px;background:#fff;border-bottom:1px solid #e8e7e2;display:flex;align-items:center;gap:10px}.topbar h1{font-size:15px;font-weight:600;flex:1}.btn{font-size:12px;padding:6px 12px;border:1px solid #ddd;border-radius:7px;background:#fff;color:#333;cursor:pointer;font-weight:500}.btn:hover{background:#f5f5f3}.content{flex:1;overflow-y:auto;padding:20px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}.stat{background:#fff;border-radius:10px;padding:14px 16px;border:1px solid #e8e7e2}.stat-label{font-size:11px;color:#888;margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em}.stat-val{font-size:26px;font-weight:600}.card{background:#fff;border-radius:10px;border:1px solid #e8e7e2;overflow:hidden;margin-bottom:16px}table{width:100%;border-collapse:collapse;font-size:13px}th{background:#fafaf8;padding:9px 14px;text-align:left;font-weight:500;font-size:11px;color:#888;border-bottom:1px solid #e8e7e2;white-space:nowrap;text-transform:uppercase;letter-spacing:.04em}td{padding:10px 14px;border-bottom:1px solid #f0efe9;vertical-align:middle;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}tr:last-child td{border-bottom:none}tr.row{cursor:pointer}tr.row:hover td{background:#fafaf8}.pill{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:500}.p-intake{background:#dbeafe;color:#1e40af}.p-insurance_verify{background:#fce7f3;color:#9d174d}.p-approved{background:#d1fae5;color:#065f46}.p-active{background:#dcfce7;color:#166534}.p-billing{background:#fef3c7;color:#92400e}.p-billing_issue{background:#fee2e2;color:#991b1b}.p-closed,.p-default{background:#f3f4f6;color:#4b5563}.empty{padding:60px 24px;text-align:center;color:#aaa;font-size:14px;line-height:2}.lmsg{padding:60px 24px;text-align:center;color:#888;font-size:14px}.err{margin-bottom:14px;padding:12px 16px;background:#fee2e2;border-radius:8px;color:#991b1b;font-size:13px}.back{font-size:13px;color:#666;cursor:pointer;background:none;border:none;padding:0;margin-bottom:16px;display:inline-flex;align-items:center;gap:5px;font-weight:500}.back:hover{color:#1a1a18}.av{width:42px;height:42px;border-radius:50%;background:#dbeafe;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:#1e40af;flex-shrink:0}.dh{display:flex;align-items:center;gap:14px;margin-bottom:18px}.dn{font-size:17px;font-weight:600}.ds{font-size:13px;color:#666;margin-top:3px}.stitle{font-size:11px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;margin-top:18px}.fg{display:grid;grid-template-columns:1fr 1fr;gap:8px}.f{background:#fafaf8;border-radius:8px;padding:10px 12px;border:1px solid #e8e7e2;min-width:0}.fl{font-size:10px;color:#aaa;margin-bottom:3px;text-transform:uppercase;letter-spacing:.04em}.fv{font-size:13px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.tli{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid #f0efe9}.tli:last-child{border:none}.tld{width:7px;height:7px;border-radius:50%;background:#ccc;flex-shrink:0;margin-top:4px}.tlt{font-size:12px}.tldate{font-size:11px;color:#aaa}.taski{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0efe9}.taski:last-child{border:none}.cb{width:16px;height:16px;border:1.5px solid #ccc;border-radius:4px;flex-shrink:0;cursor:pointer;background:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;color:#1D9E75}.cb.done{background:#dcfce7;border-color:#1D9E75}.ttxt{font-size:13px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ttxt.done{text-decoration:line-through;color:#aaa}.pri-urgent{font-size:11px;color:#dc2626;font-weight:500}.pri-high{font-size:11px;color:#d97706;font-weight:500}.pri-normal{font-size:11px;color:#aaa}.fbadge{font-size:11px;padding:3px 9px;border-radius:20px;display:inline-flex;align-items:center;gap:4px}.fdone{background:#dcfce7;color:#166534}.fpend{background:#f3f4f6;color:#6b7280}.dc{background:#fff;border-radius:10px;border:1px solid #e8e7e2;padding:18px}</style></head><body><div class="shell"><div class="sidebar"><div class="logo">Drive<em>Track</em> CRM</div><div class="nav"><div class="ni on" id="n0" data-view="dashboard">&#9638; Dashboard</div><div class="ni" id="n1" data-view="renters">&#9737; Renters</div><div class="ni" id="n2" data-view="tasks">&#10003; Tasks</div></div><div class="status-bar"><span class="dot yellow" id="sdot"></span><span id="stxt">Connecting...</span></div></div><div class="main"><div class="topbar"><h1 id="ptitle">Dashboard</h1><button class="btn" id="refreshBtn">&#8635; Refresh</button></div><div class="content" id="content"><div class="lmsg">Loading...</div></div></div></div><script>const BASE='';
 let S={view:'dashboard',renters:[],tasks:[],sel:null,loading:true,err:null};
 function ss(c,t){document.getElementById('sdot').className='dot '+c;document.getElementById('stxt').textContent=t;}
-async function load(){
-  S.loading=true;S.err=null;ss('yellow','Loading...');render();
-  try{
-    const[rv,tv]=await Promise.all([
-      fetch(BASE+'/api/renters').then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json()}),
-      fetch(BASE+'/api/tasks').then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json()})
-    ]);
-    S.renters=Array.isArray(rv)?rv:[];S.tasks=Array.isArray(tv)?tv:[];
-    S.loading=false;ss('green','Online - '+S.renters.length+' renters');render();
-  }catch(e){S.loading=false;S.err=e.message;ss('red','Error');render();}
-}
-function nav(v,i){S.view=v;S.sel=null;[0,1,2].forEach(j=>document.getElementById('n'+j).classList.toggle('on',j===i));document.getElementById('ptitle').textContent={dashboard:'Dashboard',renters:'Renters',tasks:'Tasks'}[v];render();}
-function refresh(){S.sel=null;load();}
-function e(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;');}
-function pill(s){const L={intake:'Intake',insurance_verify:'Ins. verify',approved:'Approved',active:'Active',billing:'Billing',billing_issue:'Billing issue',collected_ins:'Collected',collected_cc:'Coll. CC',closed:'Closed'};return '<span class="pill p-'+((s||'default').replace(/[^a-z_]/g,''))+'">'+( L[s]||s||'--')+'</span>';}
+async function load(){S.loading=true;S.err=null;ss('yellow','Loading...');render();try{const[rv,tv]=await Promise.all([fetch(BASE+'/api/renters').then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json()}),fetch(BASE+'/api/tasks').then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json()})]);S.renters=Array.isArray(rv)?rv:[];S.tasks=Array.isArray(tv)?tv:[];S.loading=false;ss('green','Online - '+S.renters.length+' renters');render();}catch(err){S.loading=false;S.err=err.message;ss('red','Error');render();}}
+function setView(v){S.view=v;S.sel=null;document.querySelectorAll('.ni').forEach((el,i)=>el.classList.toggle('on',i===['dashboard','renters','tasks'].indexOf(v)));document.getElementById('ptitle').textContent={dashboard:'Dashboard',renters:'Renters',tasks:'Tasks'}[v];render();}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');}
+function pill(s){const L={intake:'Intake',insurance_verify:'Ins. verify',approved:'Approved',active:'Active',billing:'Billing',billing_issue:'Billing issue',collected_ins:'Collected',collected_cc:'Coll. CC',closed:'Closed'};const cls=(s||'default').replace(/[^a-z_]/g,'');return '<span class="pill p-'+cls+'">'+(L[s]||s||'--')+'</span>';}
 function ini(r){return((r.first_name||'?')[0]+(r.last_name||'?')[0]).toUpperCase();}
-function render(){
-  const el=document.getElementById('content');
-  if(S.loading){el.innerHTML='<div class="lmsg">Loading...</div>';return;}
-  let h=S.err?'<div class="err">Cannot reach backend: '+e(S.err)+'</div>':'';
-  if(S.view==='dashboard')h+=dash();
-  else if(S.view==='renters')h+=S.sel?detail():renters();
-  else if(S.view==='tasks')h+=tasks();
-  el.innerHTML=h;
-}
-function dash(){
-  const r=S.renters,t=S.tasks,active=r.filter(x=>x.stage==='active').length,billing=r.filter(x=>x.stage==='billing'||x.stage==='billing_issue').length,open=t.filter(x=>!x.done).length;
-  let h='<div class="stats"><div class="stat"><div class="stat-label">Total renters</div><div class="stat-val">'+r.length+'</div></div><div class="stat"><div class="stat-label">Active</div><div class="stat-val" style="color:#166534">'+active+'</div></div><div class="stat"><div class="stat-label">In billing</div><div class="stat-val" style="color:#92400e">'+billing+'</div></div><div class="stat"><div class="stat-label">Open tasks</div><div class="stat-val" style="color:#991b1b">'+open+'</div></div></div>';
-  if(!r.length)return h+'<div class="card"><div class="empty">No renters yet.<br>Submit a form at autoinjuryrentals.com/rental-agreement then click Refresh.</div></div>';
-  h+='<div class="card"><table><thead><tr><th>Name</th><th>Phone</th><th>Insurance</th><th>Shop</th><th>Stage</th></tr></thead><tbody>';
-  r.slice(0,10).forEach(x=>{h+='<tr class="row" onclick="openR(''+x.id+'')"><td style="font-weight:600">'+e(x.first_name)+' '+e(x.last_name)+'</td><td>'+e(x.cell_phone||'--')+'</td><td>'+e(x.insurance_company||'--')+'</td><td>'+e(x.shop_name||'--')+'</td><td>'+pill(x.stage)+'</td></tr>';});
-  return h+'</tbody></table></div>';
-}
-function renters(){
-  if(!S.renters.length)return'<div class="card"><div class="empty">No renters yet.</div></div>';
-  let h='<div class="card"><table><thead><tr><th>Name</th><th>Phone</th><th>Insurance</th><th>Claim #</th><th>Shop</th><th>Vehicle #</th><th>Stage</th></tr></thead><tbody>';
-  S.renters.forEach(x=>{h+='<tr class="row" onclick="openR(''+x.id+'')"><td style="font-weight:600">'+e(x.first_name)+' '+e(x.last_name)+'</td><td>'+e(x.cell_phone||'--')+'</td><td>'+e(x.insurance_company||'--')+'</td><td>'+e(x.claim_number||'--')+'</td><td>'+e(x.shop_name||'--')+'</td><td>'+e(x.rental_vehicle_number||'--')+'</td><td>'+pill(x.stage)+'</td></tr>';});
-  return h+'</tbody></table></div>';
-}
-function detail(){
-  const x=S.sel;if(!x)return'';
-  const tl=x.timeline||[],ts=x.tasks||[],fs=x.forms||[];
-  let h='<button class="back" onclick="S.sel=null;render()">&#8592; Back</button><div class="dc"><div class="dh"><div class="av">'+ini(x)+'</div><div><div class="dn">'+e(x.first_name)+' '+e(x.last_name)+'</div><div class="ds">'+e(x.cell_phone||'')+(x.email?' - '+e(x.email):'')+'</div><div style="margin-top:6px">'+pill(x.stage)+'</div></div></div>';
-  h+='<div class="stitle">Forms received</div><div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:4px">';
-  ['rental_form','incoming_walkaround','outgoing_walkaround'].forEach(ft=>{const d=fs.find(f=>f.form_type===ft);h+='<span class="fbadge '+(d?'fdone':'fpend')+'">'+(d?'&#10003;':'&#9675;')+' '+ft.replace(/_/g,' ')+'</span>';});
-  h+='</div><div class="stitle">Insurance</div><div class="fg"><div class="f"><div class="fl">Company</div><div class="fv">'+e(x.insurance_company||'--')+'</div></div><div class="f"><div class="fl">Claim #</div><div class="fv">'+e(x.claim_number||'--')+'</div></div><div class="f"><div class="fl">Agent</div><div class="fv">'+e(x.insurance_agent_name||'--')+'</div></div><div class="f"><div class="fl">Agent phone</div><div class="fv">'+e(x.insurance_agent_phone||'--')+'</div></div></div>';
-  h+='<div class="stitle">Rental</div><div class="fg"><div class="f"><div class="fl">Shop</div><div class="fv">'+e(x.shop_name||'--')+'</div></div><div class="f"><div class="fl">Vehicle #</div><div class="fv">'+e(x.rental_vehicle_number||'--')+'</div></div><div class="f"><div class="fl">Pickup fuel</div><div class="fv">'+e(x.pickup_fuel||'--')+'</div></div><div class="f"><div class="fl">Return fuel</div><div class="fv">'+e(x.return_fuel||'--')+'</div></div><div class="f"><div class="fl">Pickup date</div><div class="fv">'+e(x.pickup_date||'--')+'</div></div><div class="f"><div class="fl">Return date</div><div class="fv">'+e(x.return_date||'--')+'</div></div><div class="f"><div class="fl">Pickup odo</div><div class="fv">'+e(x.pickup_odometer||'--')+'</div></div><div class="f"><div class="fl">Return odo</div><div class="fv">'+e(x.return_odometer||'--')+'</div></div></div>';
-  if(ts.length){h+='<div class="stitle">Tasks</div>';ts.forEach(t=>{h+='<div class="taski"><div class="cb '+(t.done?'done':'')+'" onclick="pt(''+t.id+'','+!!t.done+')">'+(t.done?'&#10003;':'')+'</div><span class="ttxt '+(t.done?'done':'')+'">'+e(t.title)+'</span><span class="pri-'+(t.priority||'normal')+'">'+(t.priority||'')+'</span></div>';});}
-  if(tl.length){h+='<div class="stitle">Timeline</div>';[...tl].reverse().forEach(ev=>{h+='<div class="tli"><div class="tld"></div><div><div class="tlt">'+e(ev.text)+'</div><div class="tldate">'+e(ev.date||'')+'</div></div></div>';});}
-  return h+'</div>';
-}
-function tasks(){
-  const op=S.tasks.filter(t=>!t.done),dn=S.tasks.filter(t=>t.done);
-  if(!S.tasks.length)return'<div class="card"><div class="empty">No tasks yet.</div></div>';
-  let h='<div style="font-size:13px;font-weight:600;color:#888;margin-bottom:10px">Open ('+op.length+')</div>';
-  if(op.length){h+='<div class="card" style="margin-bottom:16px"><table><thead><tr><th></th><th>Task</th><th>Renter</th><th>Priority</th></tr></thead><tbody>';op.forEach(t=>{h+='<tr><td style="width:32px"><div class="cb" onclick="pt(''+t.id+'',false)"></div></td><td>'+e(t.title)+'</td><td>'+e(t.renter_name||'--')+'</td><td><span class="pri-'+(t.priority||'normal')+'">'+(t.priority||'normal')+'</span></td></tr>';});h+='</tbody></table></div>';}
-  if(dn.length){h+='<div style="font-size:13px;font-weight:600;color:#bbb;margin-bottom:10px">Done ('+dn.length+')</div><div class="card"><table><thead><tr><th></th><th>Task</th><th>Renter</th></tr></thead><tbody>';dn.forEach(t=>{h+='<tr><td style="color:#1D9E75">&#10003;</td><td style="text-decoration:line-through;color:#bbb">'+e(t.title)+'</td><td style="color:#bbb">'+e(t.renter_name||'--')+'</td></tr>';});h+='</tbody></table></div>';}
-  return h;
-}
-async function openR(id){
-  S.view='renters';S.sel=null;[0,1,2].forEach(i=>document.getElementById('n'+i).classList.toggle('on',i===1));
-  document.getElementById('ptitle').textContent='Renters';render();
-  try{const r=await fetch(BASE+'/api/renters/'+id).then(x=>x.json());S.sel=r;render();}catch(ex){S.err=ex.message;render();}
-}
-async function pt(id,was){
-  try{await fetch(BASE+'/api/tasks/'+id+'/done',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({done:!was})});
-  if(S.sel){const r=await fetch(BASE+'/api/renters/'+S.sel.id).then(x=>x.json());S.sel=r;}load();}catch(ex){}
-}
-load();
-</script>
-</body>
-</html>
+function render(){const el=document.getElementById('content');if(S.loading){el.innerHTML='<div class="lmsg">Loading...</div>';return;}let h=S.err?'<div class="err">Error: '+esc(S.err)+'</div>':'';if(S.view==='dashboard')h+=dash();else if(S.view==='renters')h+=S.sel?detail():renters();else if(S.view==='tasks')h+=tasks();el.innerHTML=h;}
+function dash(){const r=S.renters,t=S.tasks,active=r.filter(x=>x.stage==='active').length,billing=r.filter(x=>x.stage==='billing'||x.stage==='billing_issue').length,open=t.filter(x=>!x.done).length;let h='<div class="stats"><div class="stat"><div class="stat-label">Total renters</div><div class="stat-val">'+r.length+'</div></div><div class="stat"><div class="stat-label">Active</div><div class="stat-val" style="color:#166534">'+active+'</div></div><div class="stat"><div class="stat-label">In billing</div><div class="stat-val" style="color:#92400e">'+billing+'</div></div><div class="stat"><div class="stat-label">Open tasks</div><div class="stat-val" style="color:#991b1b">'+open+'</div></div></div>';if(!r.length)return h+'<div class="card"><div class="empty">No renters yet.<br>Submit a form at autoinjuryrentals.com/rental-agreement then click Refresh.</div></div>';h+='<div class="card"><table><thead><tr><th>Name</th><th>Phone</th><th>Insurance</th><th>Shop</th><th>Stage</th></tr></thead><tbody>';r.slice(0,10).forEach(x=>{h+='<tr class="row" data-rid="'+esc(x.id)+'"><td style="font-weight:600">'+esc(x.first_name)+' '+esc(x.last_name)+'</td><td>'+esc(x.cell_phone||'--')+'</td><td>'+esc(x.insurance_company||'--')+'</td><td>'+esc(x.shop_name||'--')+'</td><td>'+pill(x.stage)+'</td></tr>';});return h+'</tbody></table></div>';}
+function renters(){if(!S.renters.length)return'<div class="card"><div class="empty">No renters yet.</div></div>';let h='<div class="card"><table><thead><tr><th>Name</th><th>Phone</th><th>Insurance</th><th>Claim #</th><th>Shop</th><th>Vehicle #</th><th>Stage</th></tr></thead><tbody>';S.renters.forEach(x=>{h+='<tr class="row" data-rid="'+esc(x.id)+'"><td style="font-weight:600">'+esc(x.first_name)+' '+esc(x.last_name)+'</td><td>'+esc(x.cell_phone||'--')+'</td><td>'+esc(x.insurance_company||'--')+'</td><td>'+esc(x.claim_number||'--')+'</td><td>'+esc(x.shop_name||'--')+'</td><td>'+esc(x.rental_vehicle_number||'--')+'</td><td>'+pill(x.stage)+'</td></tr>';});return h+'</tbody></table></div>';}
+function detail(){const x=S.sel;if(!x)return'';const tl=x.timeline||[],ts=x.tasks||[],fs=x.forms||[];let h='<button class="back" id="backBtn">&#8592; Back</button><div class="dc"><div class="dh"><div class="av">'+ini(x)+'</div><div><div class="dn">'+esc(x.first_name)+' '+esc(x.last_name)+'</div><div class="ds">'+esc(x.cell_phone||'')+(x.email?' - '+esc(x.email):'')+'</div><div style="margin-top:6px">'+pill(x.stage)+'</div></div></div>';h+='<div class="stitle">Forms received</div><div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:4px">';['rental_form','incoming_walkaround','outgoing_walkaround'].forEach(ft=>{const d=fs.find(f=>f.form_type===ft);h+='<span class="fbadge '+(d?'fdone':'fpend')+'">'+(d?'&#10003;':'&#9675;')+' '+ft.replace(/_/g,' ')+'</span>';});h+='</div>';h+='<div class="stitle">Insurance</div><div class="fg"><div class="f"><div class="fl">Company</div><div class="fv">'+esc(x.insurance_company||'--')+'</div></div><div class="f"><div class="fl">Claim #</div><div class="fv">'+esc(x.claim_number||'--')+'</div></div><div class="f"><div class="fl">Agent</div><div class="fv">'+esc(x.insurance_agent_name||'--')+'</div></div><div class="f"><div class="fl">Agent phone</div><div class="fv">'+esc(x.insurance_agent_phone||'--')+'</div></div></div>';h+='<div class="stitle">Rental</div><div class="fg"><div class="f"><div class="fl">Shop</div><div class="fv">'+esc(x.shop_name||'--')+'</div></div><div class="f"><div class="fl">Vehicle #</div><div class="fv">'+esc(x.rental_vehicle_number||'--')+'</div></div><div class="f"><div class="fl">Pickup fuel</div><div class="fv">'+esc(x.pickup_fuel||'--')+'</div></div><div class="f"><div class="fl">Return fuel</div><div class="fv">'+esc(x.return_fuel||'--')+'</div></div><div class="f"><div class="fl">Pickup date</div><div class="fv">'+esc(x.pickup_date||'--')+'</div></div><div class="f"><div class="fl">Return date</div><div class="fv">'+esc(x.return_date||'--')+'</div></div></div>';if(ts.length){h+='<div class="stitle">Tasks</div>';ts.forEach(t=>{h+='<div class="taski"><div class="cb '+(t.done?'done':'')+' " data-tid="'+esc(t.id)+'" data-was="'+(t.done?1:0)+'">'+(t.done?'&#10003;':'')+'</div><span class="ttxt '+(t.done?'done':'')+'">'+esc(t.title)+'</span><span class="pri-'+(t.priority||'normal')+'">'+(t.priority||'')+'</span></div>';});}if(tl.length){h+='<div class="stitle">Timeline</div>';[...tl].reverse().forEach(ev=>{h+='<div class="tli"><div class="tld"></div><div><div class="tlt">'+esc(ev.text)+'</div><div class="tldate">'+esc(ev.date||'')+'</div></div></div>';});}return h+'</div>';}
+function tasks(){const op=S.tasks.filter(t=>!t.done),dn=S.tasks.filter(t=>t.done);if(!S.tasks.length)return'<div class="card"><div class="empty">No tasks yet.</div></div>';let h='<div style="font-size:13px;font-weight:600;color:#888;margin-bottom:10px">Open ('+op.length+')</div>';if(op.length){h+='<div class="card"><table><thead><tr><th></th><th>Task</th><th>Renter</th><th>Priority</th></tr></thead><tbody>';op.forEach(t=>{h+='<tr><td style="width:32px"><div class="cb" data-tid="'+esc(t.id)+'" data-was="0"></div></td><td>'+esc(t.title)+'</td><td>'+esc(t.renter_name||'--')+'</td><td><span class="pri-'+(t.priority||'normal')+'">'+(t.priority||'normal')+'</span></td></tr>';});h+='</tbody></table></div>';}if(dn.length){h+='<div style="font-size:13px;font-weight:600;color:#bbb;margin-bottom:10px">Done ('+dn.length+')</div><div class="card"><table><thead><tr><th></th><th>Task</th><th>Renter</th></tr></thead><tbody>';dn.forEach(t=>{h+='<tr><td style="color:#1D9E75">&#10003;</td><td style="text-decoration:line-through;color:#bbb">'+esc(t.title)+'</td><td style="color:#bbb">'+esc(t.renter_name||'--')+'</td></tr>';});h+='</tbody></table></div>';}return h;}
+async function openRenter(id){S.view='renters';S.sel=null;document.querySelectorAll('.ni').forEach((el,i)=>el.classList.toggle('on',i===1));document.getElementById('ptitle').textContent='Renters';render();try{const r=await fetch(BASE+'/api/renters/'+id).then(x=>x.json());S.sel=r;render();}catch(e){S.err=e.message;render();}}
+async function patchTask(id,was){try{await fetch(BASE+'/api/tasks/'+id+'/done',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({done:!was})});if(S.sel){const r=await fetch(BASE+'/api/renters/'+S.sel.id).then(x=>x.json());S.sel=r;}load();}catch(e){}}
+document.addEventListener('click',function(ev){const nb=ev.target.closest('#refreshBtn');if(nb){S.sel=null;load();return;}const nv=ev.target.closest('.ni[data-view]');if(nv){setView(nv.dataset.view);return;}const bk=ev.target.closest('#backBtn');if(bk){S.sel=null;render();return;}const rw=ev.target.closest('tr.row[data-rid]');if(rw){openRenter(rw.dataset.rid);return;}const cb=ev.target.closest('.cb[data-tid]');if(cb){patchTask(cb.dataset.tid,cb.dataset.was==='1');return;}});
+load();</script></body></html>
