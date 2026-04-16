@@ -5,6 +5,7 @@ const path = require('path');
 const app = express();
 app.use(express.json());
 app.use((req,res,next)=>{res.header('Access-Control-Allow-Origin','*');res.header('Access-Control-Allow-Headers','Content-Type');res.header('Access-Control-Allow-Methods','GET,POST,PATCH,DELETE,OPTIONS');if(req.method==='OPTIONS')return res.sendStatus(200);next();});
+app.use(require('express').static(__dirname));
 const db = new Database(path.join(__dirname, 'drivetrack.db'));
 db.exec(`
   CREATE TABLE IF NOT EXISTS renters (
